@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - CanSat FITEC 2026</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(20, 27, 45, 0.75);
+      --card-border: rgba(0, 240, 255, 0.2);
+      --cyan: #00f0ff;
+      --gold: #ffd700;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
+      --text: #f0f6fc;
+      --text-muted: #8b949e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #162038 0%, var(--bg) 80%);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* HEADER GAMIFICADO */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge-stage {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      border-radius: 50px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: 1px;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-top: 0.3rem;
+    }
+
+    /* CONTROLES / FILTRO */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(13, 17, 23, 0.8);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 0.6rem 1rem 0.6rem 2.4rem;
+      border-radius: 8px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    /* TABLA / LISTA GAMIFICADA */
+    .leaderboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .rank-card {
+      display: flex;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 0.8rem 1.2rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rank-card:hover {
+      transform: translateX(5px) scale(1.01);
+      border-color: var(--cyan);
+      box-shadow: 0 5px 15px rgba(0, 240, 255, 0.15);
+    }
+
+    /* POSICIÓN Y MEDALLAS */
+    .rank-pos {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      width: 45px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* INSIGNIAS DE EQUIPO (ESPACIO DEDICADO) */
+    .team-badge-slot {
+      width: 48px;
+      height: 48px;
+      margin: 0 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .team-badge-slot:hover {
+      border-color: var(--cyan);
+    }
+
+    .team-badge-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .team-badge-slot .placeholder-icon {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* INFO PARTICIPANTE */
+    .participant-info {
+      flex: 1;
+    }
+
+    .participant-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.1rem;
+    }
+
+    .score-breakdown {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .score-breakdown span {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    /* PUNTAJE TOTAL */
+    .total-score-box {
+      text-align: right;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .total-score {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--cyan);
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+
+    .total-max {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ESTILOS PODIO (TOP 3) */
+    .rank-1 {
+      border-color: rgba(255, 215, 0, 0.5);
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.12), rgba(20, 27, 45, 0.85));
+    }
+    .rank-1 .rank-pos { color: var(--gold); }
+    .rank-1 .total-score { color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+
+    .rank-2 {
+      border-color: rgba(192, 192, 192, 0.5);
+      background: linear-gradient(90deg, rgba(192, 192, 192, 0.1), rgba(20, 27, 45, 0.85));
+    }
+    .rank-2 .rank-pos { color: var(--silver); }
+    .rank-2 .total-score { color: var(--silver); text-shadow: 0 0 10px rgba(192, 192, 192, 0.4); }
+
+    .rank-3 {
+      border-color: rgba(205, 127, 50, 0.5);
+      background: linear-gradient(90deg, rgba(205, 127, 50, 0.1), rgba(20, 27, 45, 0.85));
+    }
+    .rank-3 .rank-pos { color: var(--bronze); }
+    .rank-3 .total-score { color: var(--bronze); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge-stage"><i class="fa-solid fa-satellite"></i> ETAPA 1: DISEÑO & REVISIÓN</div>
+      <h1>LEADERBOARD CANSAT FITEC 2026</h1>
+      <p class="subtitle">Clasificación oficial acumulada hacia la plataforma de lanzamiento</p>
+    </header>
+
+    <div class="controls">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Buscar tripulante / equipo...">
+      </div>
+    </div>
+
+    <!-- Contenedor dinámico de la lista -->
+    <div class="leaderboard-list" id="leaderboardList"></div>
+  </div>
+
+  <script>
+    let participants = [];
+
+    // Procesar totales y ordenar descendente
+    participants.forEach(p => p.total = p.score80 + p.score20);
+    participants.sort((a, b) => b.total - a.total || b.score80 - a.score80);
+
+    const container = document.getElementById("leaderboardList");
+    const searchInput = document.getElementById("searchInput");
+
+    function renderLeaderboard(filter = "") {
+      container.innerHTML = "";
+      
+      const filtered = participants.filter(p => 
+        p.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      filtered.forEach((p, idx) => {
+        // Encontrar posición general según lista ordenada
+        const absoluteRank = participants.findIndex(item => item.id === p.id) + 1;
+        
+        let rankClass = "";
+        let medalIcon = `#${absoluteRank}`;
+
+        if (absoluteRank === 1) {
+          rankClass = "rank-1";
+          medalIcon = '<i class="fa-solid fa-trophy"></i>';
+        } else if (absoluteRank === 2) {
+          rankClass = "rank-2";
+          medalIcon = '<i class="fa-solid fa-medal"></i>';
+        } else if (absoluteRank === 3) {
+          rankClass = "rank-3";
+          medalIcon = '<i class="fa-solid fa-award"></i>';
+        }
+
+        // Espacio para la insignia (Slot)
+        const badgeHTML = p.badgeUrl 
+          ? `<img src="${p.badgeUrl}" alt="Insignia ${p.name}">` 
+          : `<i class="fa-solid fa-shield-halved placeholder-icon" title="Slot para insignia"></i>`;
+
+        const card = document.createElement("div");
+        card.className = `rank-card ${rankClass}`;
+        card.innerHTML = `
+          <div class="rank-pos">${medalIcon}</div>
+          
+          <!-- ESPACIO RESERVADO PARA INSIGNIA -->
+          <div class="team-badge-slot" title="Insignia de equipo">
+            ${badgeHTML}
+          </div>
+
+          <div class="participant-info">
+            <div class="participant-name">${p.name}</div>
+            <div class="score-breakdown">
+              <span>Cansat: <b>${p.score80}</b>/80</span>
+              <span>Extra: <b>${p.score20}</b>/20</span>
+            </div>
+          </div>
+
+          <div class="total-score-box">
+            <div class="total-score">${p.total}</div>
+            <div class="total-max">/ 100 PTS</div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    // Escuchar el buscador
+    searchInput.addEventListener("input", (e) => {
+      renderLeaderboard(e.target.value);
+    });
+
+    async function cargarParticipantes() {
+      const response = await fetch("/api/participantes");
+
+      if (!response.ok) {
+        throw new Error("No se pudieron cargar los participantes");
+      }
+
+      participants = await response.json();
+      participants.forEach(p => p.total = p.score80 + p.score20);
+      participants.sort((a, b) => b.total - a.total || b.score80 - a.score80);
+      renderLeaderboard();
+    }
+
+    cargarParticipantes().catch(error => {
+      console.error(error);
+      container.innerHTML = "<p>No se pudo cargar el leaderboard.</p>";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es" data-bs-theme="dark">
+    <head>
+        <title>Laboratorio de Robótica</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Bootstrap CSS v5.3.8 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <!--Poner el color de la letra en el navbar de negro-->
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Lab. Robótica</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                    aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#proyectos">Proyectos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#equipo">Equipo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contacto">Contacto</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                                Más
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Documentación</a></li>
+                                <li><a class="dropdown-item" href="#">Redes sociales</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                Bienvenido al sitio oficial del Laboratorio de Robótica.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Laboratorio de Robótica</h1>
+                </div>
+                <div class="col-md-6">
+                     <p>Diseño, construcción y programación de sistemas robóticos aplicados.</p>
+                </div>
+            </div>
+
+            <div id="proyectos" class="row mt-5 gx-4">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <img src="Images/robot_movil_diferencial.webp" class="card-img-top mb-3" alt="Robot móvil diferencial">
+                            <h3>Robot móvil diferencial</h3>
+                            <span class="badge bg-success mb-2">Activo</span>
+                            <p>Plataforma con dos motores independientes para navegación autónoma.</p>
+                            <div class="accordion mt-4" id="detalleProyectos1">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#colapso1">
+                                            Robot móvil diferencial — Detalle técnico
+                                        </button>
+                                    </h2>
+                                    <div id="colapso1" class="accordion-collapse collapse" data-bs-parent="#proyectos">
+                                        <div class="accordion-body">
+                                            Plataforma de tracción diferencial con dos motores DC controlados
+                                            de forma independiente, sensores de distancia y control mediante
+                                            microcontrolador ESP32.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <img src="Images/cansat.webp" class="card-img-top mb-3" alt="Proyecto CanSAT">
+                            <h3 class="card-title">Proyecto CanSAT</h3>
+                            <span class="badge bg-info text-dark mb-2">En pruebas</span>
+                            <p class="card-text">Simulación de un satélite en formato lata para telemetría atmosférica.</p>
+                            <div class="accordion mt-4" id="detalleProyectos2">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#colapso2">
+                                            Proyecto CanSAT — Detalle técnico
+                                        </button>
+                                    </h2>
+                                    <div id="colapso2" class="accordion-collapse collapse" data-bs-parent="#proyectos">
+                                        <div class="accordion-body">
+                                            Estructura tipo lata con sensores de presión, temperatura y GPS,
+                                            transmitiendo telemetría a una estación terrena en tiempo real.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <img src="Images/brazo_robotico.webp" class="card-img-top mb-3" alt="Brazo robótico">
+                            <h3 class="card-title">Brazo robótico</h3>
+                            <span class="badge bg-warning text-dark mb-2">En desarrollo</span>
+                            <p class="card-text">Manipulador de varios grados de libertad para tareas de precisión.</p>
+                            <!-- Aqui va el tercer colapse-->
+                            <div class="accordion mt-4" id="detalleProyectos3">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#colapso3">
+                                            Brazo robótico — Detalle técnico
+                                        </button>
+                                    </h2>
+                                    <div id="colapso3" class="accordion-collapse collapse" data-bs-parent="#proyectos">
+                                        <div class="accordion-body">
+                                            Manipulador articulado con servomotores en cada grado de libertad,
+                                            controlado mediante microcontrolador y utilizado para tareas de
+                                            precisión como sujeción y posicionamiento de piezas pequeñas.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h4>¿Quieres unirte al laboratorio?</h4>
+                        <p>Buscamos estudiantes interesados en robótica de servicio y sistemas embebidos.</p>
+                        <a href="#contacto" class="btn btn-success">Contáctanos</a>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="row mt-5" id="equipo">
+                <div class="col-12">
+                    <h2>Equipo</h2>
+                </div>
+                <div class="col-sm-6 col-lg-4 mt-3">
+                    <div class="card h-100 shadow-sm text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Coordinación general</h5>
+                            <p class="card-text">Responsable del diseño y planeación de proyectos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mt-3">
+                    <div class="card h-100 shadow-sm text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Desarrollo de firmware</h5>
+                            <p class="card-text">Programación de microcontroladores y sensores.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mt-3">
+                    <div class="card h-100 shadow-sm text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Diseño mecánico</h5>
+                            <p class="card-text">Estructuras, chasis y ensamble de plataformas móviles.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- Sección Contacto: row con id="contacto", form envuelto en col-12 col-lg-8 mx-auto -->
+            <div class="row mt-5" id="contacto">
+                <div class="col-12 col-lg-8 mx-auto">
+                    <h2>Contacto</h2>
+                    <form>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre completo</label>
+                            <input type="text" class="form-control" id="nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control is-invalid" id="correo">
+                            <div class="invalid-feedback">Por favor ingresa un correo electrónico válido.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mensaje" class="form-label">Mensaje</label>
+                            <textarea class="form-control" id="mensaje" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+ 
+        </div>
+ 
+        <!-- Footer fuera del container principal, con mt-5 y col-12 como base para móvil -->
+        <footer class="bg-dark text-light py-4 mt-5">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-12 col-md-4">
+                        <h5>Laboratorio de Robótica</h5>
+                        <p class="mb-0">Universidad de Montemorelos</p>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h5>Enlaces</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li><a class="link-light" href="#proyectos">Proyectos</a></li>
+                            <li><a class="link-light" href="#equipo">Equipo</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h5>Contacto</h5>
+                        <p class="mb-0">laboratorio.robotica@um.edu.mx</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap JavaScript Bundle (includes Popper) -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous">
+        </script>
+    </body>
+</html>

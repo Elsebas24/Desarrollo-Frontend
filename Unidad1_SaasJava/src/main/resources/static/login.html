@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión - Editor de Texto SaaS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .password-field {
+      position: relative;
+    }
+
+    .password-field .form-control {
+      padding-right: 2.75rem;
+    }
+
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 0.4rem;
+      z-index: 3;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #6c757d;
+      transform: translateY(-50%);
+    }
+
+    .password-toggle:hover,
+    .password-toggle:focus {
+      color: #212529;
+      outline: none;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+  <main class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-sm" style="width: 100%; max-width: 400px;">
+      <div class="card-body p-4">
+        <h1 class="h3 mb-4 text-center">Editor de Texto SaaS</h1>
+
+        <div id="alerta"></div>
+
+        <!-- Spring Security procesa este POST en /login -->
+        <form action="/login" method="post" onsubmit="ponerCsrf()">
+          <input type="hidden" name="_csrf" id="csrf">
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input type="text" id="username" name="username" class="form-control" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="password-field">
+              <input type="password" id="password" name="password" class="form-control" required>
+              <button type="button" class="password-toggle" onclick="togglePassword(this)"
+                aria-label="Mostrar contraseña" title="Mostrar contraseña">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Entrar</button>
+        </form>
+
+        <p class="text-center mt-3 mb-0">
+          ¿No tienes cuenta? <a href="/registro.html">Regístrate</a>
+        </p>
+      </div>
+    </div>
+  </main>
+  <script>
+    function togglePassword(button) {
+      const input = document.getElementById('password');
+      const icon = button.querySelector('i');
+      const isPassword = input.type === 'password';
+
+      input.type = isPassword ? 'text' : 'password';
+      icon.classList.toggle('fa-eye', !isPassword);
+      icon.classList.toggle('fa-eye-slash', isPassword);
+      button.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      button.setAttribute('title', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    }
+
+    function leerCsrf() {
+      const cookie = document.cookie.split('; ').find(c => c.startsWith('XSRF-TOKEN='));
+      return cookie ? cookie.substring('XSRF-TOKEN='.length) : '';
+    }
+
+    function ponerCsrf() {
+      document.getElementById('csrf').value = leerCsrf();
+    }
+
+    const params = new URLSearchParams(location.search);
+    const alerta = document.getElementById('alerta');
+    if (params.has('error')) {
+      alerta.innerHTML = '<div class="alert alert-danger">Usuario o contraseña incorrectos</div>';
+    } else if (params.has('logout')) {
+      alerta.innerHTML = '<div class="alert alert-info">Sesión cerrada</div>';
+    } else if (params.has('registrado')) {
+      alerta.innerHTML = '<div class="alert alert-success">Cuenta creada, ya puedes iniciar sesión</div>';
+    }
+  </script>
+</body>
+
+</html>

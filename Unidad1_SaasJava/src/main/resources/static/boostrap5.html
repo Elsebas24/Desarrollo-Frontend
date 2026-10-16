@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/78b1a0af3a.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="fa-regular fa-closed-captioning" alt="Bootstrap" width="30" height="24"
+          style="color: aquamarine;"></i>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+        <span class="navbar-text text-light me-3">
+          <i class="fa-solid fa-user"></i> <span id="usuarioActual"></span>
+        </span>
+        <form action="/logout" method="post" onsubmit="this._csrf.value = leerCsrf()">
+          <input type="hidden" name="_csrf">
+          <button class="btn btn-outline-light" type="submit">Cerrar sesión</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <main class="container mt-4">
+    <h1>Editor de Texto SaaS</h1>
+
+    <label for="titulo" class="form-label">Título del documento:</label>
+    <input id="titulo" placeholder="Título del documento" class="form-control"><br>
+    <label for="contenido" class="form-label">Contenido del documento:</label>
+    <textarea id="contenido" placeholder="Escribe aquí..." class="form-control"></textarea>
+    <br>
+    <button onclick="guardarDocumento()" class="btn btn-outline-primary">Guardar</button><br><br>
+    <div id="aviso"></div>
+
+    <h2>Mi documento</h2>
+    <div id="lista" class="row g-4"></div>
+  </main>
+  <script>
+    const API = '/api/documentos';
+    let idActual = null;
+
+    // Token CSRF que Spring Security manda en la cookie XSRF-TOKEN
+    function leerCsrf() {
+      const cookie = document.cookie.split('; ').find(c => c.startsWith('XSRF-TOKEN='));
+      return cookie ? cookie.substring('XSRF-TOKEN='.length) : '';
+    }
+
+    // fetch que agrega el token CSRF y manda al login si la sesión expiró
+    async function api(url, opciones = {}) {
+      opciones.headers = { ...opciones.headers, 'X-XSRF-TOKEN': leerCsrf() };
+      const res = await fetch(url, opciones);
+      if (res.status === 401) {
+        location.href = '/login.html';
+      }
+      return res;
+    }
+
+    function mostrarAviso(mensaje, tipo) {
+      const div = document.createElement('div');
+      div.className = `alert alert-${tipo}`;
+      div.textContent = mensaje;
+      document.getElementById('aviso').replaceChildren(div);
+    }
+
+    async function cargarUsuario() {
+      const res = await api('/api/usuarios/yo');
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('usuarioActual').textContent = data.username;
+      }
+    }
+
+    async function cargarLista() {
+      try {
+        const res = await api(API);
+        if (!res.ok) throw new Error('No se pudo cargar la lista');
+
+        const documentos = await res.json();
+        const lista = document.getElementById('lista');
+        lista.innerHTML = documentos.map(doc => `
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Título: ${doc.titulo}</h5>
+                <p class="card-text flex-grow-1"> Contenido: ${doc.contenido}</p>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                  <button class="btn btn-outline-success" onclick="editarDocumento(${doc.id})"><i class="fa-solid fa-pen-clip"></i></button>
+                  <button class="btn btn-outline-danger" onclick="eliminarDocumento(${doc.id}, event)"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        window.documentos = documentos;
+      } catch (error) {
+        console.error('Error al cargar la lista:', error);
+      }
+    }
+
+    function editarDocumento(id) {
+      const documento = window.documentos.find(doc => doc.id === id);
+      cargarDocumento(documento);
+    }
+
+    async function eliminarDocumento(id, event) {
+      event.stopPropagation();
+      if (!confirm('¿Eliminar este documento?')) return;
+
+      await api(`${API}/${id}`, { method: 'DELETE' });
+      document.getElementById('aviso').replaceChildren();
+      if (idActual === id) {
+        idActual = null;
+        document.getElementById('titulo').value = '';
+        document.getElementById('contenido').value = '';
+      }
+      cargarLista();
+    }
+
+    function cargarDocumento(doc) {
+      idActual = doc.id;
+      document.getElementById('titulo').value = doc.titulo;
+      document.getElementById('contenido').value = doc.contenido;
+    }
+
+    async function guardarDocumento() {
+      const titulo = document.getElementById('titulo').value;
+      const contenido = document.getElementById('contenido').value;
+      // El autor lo asigna el servidor con el usuario de la sesión
+      const doc = { titulo, contenido };
+
+      let res;
+      if (idActual) {
+        res = await api(`${API}/${idActual}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(doc)
+        });
+      } else {
+        res = await api(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(doc)
+        });
+      }
+
+      if (res.status === 409) {
+        mostrarAviso('Solo puedes tener un documento. Edita o elimina el que ya tienes.', 'warning');
+        return;
+      }
+      if (!res.ok) {
+        mostrarAviso('No se pudo guardar el documento', 'danger');
+        return;
+      }
+      document.getElementById('aviso').replaceChildren();
+      idActual = null;
+      document.getElementById('titulo').value = '';
+      document.getElementById('contenido').value = '';
+      cargarLista();
+    }
+
+    cargarUsuario();
+    cargarLista();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
