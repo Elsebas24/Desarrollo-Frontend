@@ -24,7 +24,6 @@ Proyectos de la materia Desarrollo Frontend (ISC, Universidad de Montemorelos).
 
 | Proyecto | Descripción | Cómo correrlo |
 |---|---|---|
-| [Unidad2_React1](Unidad2_React1) | Primera práctica de React + Vite | `npm install` y `npm run dev` |
 | [Unidad2_ReactEscolares](Unidad2_ReactEscolares) | Práctica de React | `npm install` y `npm run dev` |
 | [Unidad2_LabFullstackFrontend](Unidad2_LabFullstackFrontend) | Lista de tareas con backend Express + frontend React | Ver abajo |
 | [Unidad2_Aerolineas](Unidad2_Aerolineas) | Sistema de reservación de vuelos | `npm install` y `npm run dev` |
