@@ -1,0 +1,10 @@
+{
+    "name": "app/mvc_vanilla",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Core\\": "core/"
+        }
+    }
+
+}
