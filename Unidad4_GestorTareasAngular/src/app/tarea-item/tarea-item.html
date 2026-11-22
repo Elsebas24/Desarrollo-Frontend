@@ -1,0 +1,5 @@
+<li [class.hecha]="tarea().hecha" [class.resaltada]="resaltar()">
+  <input type="checkbox" [checked]="tarea().hecha"(change)="alternada.emit(tarea().id)" />
+    <span><a [routerLink]="['/tarea', tarea().id]">{{ tarea().texto }}</a></span>
+  <button (click)="eliminada.emit(tarea().id)">Eliminar</button>
+</li>

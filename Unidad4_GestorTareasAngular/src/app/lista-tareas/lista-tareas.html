@@ -1,0 +1,32 @@
+<form (submit)="guardar($event)" novalidate>
+  <input [formField]="nuevaForm.texto" placeholder="Nueva tarea" />
+  <button type="submit" [disabled]="nuevaForm().invalid()">Agregar</button>
+</form>
+
+@if (nuevaForm.texto().value().length > 0 && nuevaForm.texto().invalid()) {
+  <p class="error">Mínimo 3 caracteres</p>
+}
+
+@if (tareas().length > 0) {
+  <p>Pendientes: {{ pendientes() }} de {{ total() }}</p>
+}
+
+<div class="filtros">
+  <button [class.activo]="filtro() === 'todas'"
+          (click)="filtro.set('todas')">Todas</button>
+  <button [class.activo]="filtro() === 'pendientes'"
+          (click)="filtro.set('pendientes')">Pendientes</button>
+  <button [class.activo]="filtro() === 'hechas'"
+          (click)="filtro.set('hechas')">Hechas</button>
+</div>
+
+<ul>
+  @for (t of filtradas(); track t.id) {
+    <app-tarea-item [tarea]="t"
+                    [resaltar]="$first"
+                    (alternada)="alternar($event)"
+                    (eliminada)="eliminar($event)" />
+  } @empty {
+    <li>No hay tareas. ¡Agrega la primera!</li>
+  }
+</ul>

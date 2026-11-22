@@ -1,0 +1,5 @@
+.hecha { text-decoration: line-through; color: gray; }
+ul { list-style: none; padding: 0; }
+li { margin: 0.4rem 0; }
+nav a { margin-right: 1rem; }
+.activo { font-weight: bold; }

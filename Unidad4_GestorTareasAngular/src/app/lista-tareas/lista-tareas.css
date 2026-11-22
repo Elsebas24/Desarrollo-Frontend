@@ -1,0 +1,5 @@
+ul { list-style: none; padding: 0; }
+.filtros { margin: 0.5rem 0; }
+.filtros button { margin-right: 0.3rem; }
+.activo { font-weight: bold; }
+.error { color: red; margin: 0.2rem 0; }
