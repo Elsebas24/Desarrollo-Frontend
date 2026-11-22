@@ -1,0 +1,228 @@
+{
+  "stats": [
+    {
+      "icon": "battery_charging_full",
+      "color": "green",
+      "label": "Batería",
+      "value": "87 %",
+      "footerIcon": "bolt",
+      "footerText": "Cargando a 12.4 V"
+    },
+    {
+      "icon": "speed",
+      "color": "cyan",
+      "label": "Velocidad",
+      "value": "1.8 m/s",
+      "footerIcon": "route",
+      "footerText": "Recorrido: 342 m"
+    },
+    {
+      "icon": "device_thermostat",
+      "color": "orange",
+      "label": "Temperatura motor",
+      "value": "46 °C",
+      "footerIcon": "warning",
+      "footerText": "Límite: 70 °C"
+    },
+    {
+      "icon": "error_outline",
+      "color": "red",
+      "label": "Alertas",
+      "value": "2",
+      "footerIcon": "update",
+      "footerText": "Hace 3 minutos"
+    }
+  ],
+  "charts": [
+    {
+      "title": "Batería (%)",
+      "subtitle": "Descarga durante la misión",
+      "footer": "últimos 7 minutos",
+      "color": "green",
+      "type": "line",
+      "data": {
+        "labels": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "datasets": [
+          {
+            "data": [
+              100,
+              97,
+              95,
+              93,
+              91,
+              89,
+              87
+            ],
+            "borderColor": "#fff",
+            "backgroundColor": "#fff",
+            "pointBackgroundColor": "#fff",
+            "borderWidth": 2,
+            "tension": 0
+          }
+        ]
+      }
+    },
+    {
+      "title": "Distancia por día (m)",
+      "subtitle": "Recorrido de la semana",
+      "footer": "actualizado hoy",
+      "color": "orange",
+      "type": "bar",
+      "data": {
+        "labels": [
+          "L",
+          "M",
+          "X",
+          "J",
+          "V",
+          "S",
+          "D"
+        ],
+        "datasets": [
+          {
+            "data": [
+              120,
+              340,
+              280,
+              410,
+              390,
+              150,
+              342
+            ],
+            "backgroundColor": "rgba(255,255,255,.85)"
+          }
+        ]
+      }
+    },
+    {
+      "title": "Temperatura (°C)",
+      "subtitle": "Motor principal",
+      "footer": "lectura cada 10 s",
+      "color": "red",
+      "type": "line",
+      "data": {
+        "labels": [
+          "0s",
+          "10s",
+          "20s",
+          "30s",
+          "40s",
+          "50s",
+          "60s",
+          "70s"
+        ],
+        "datasets": [
+          {
+            "data": [
+              31,
+              35,
+              38,
+              41,
+              44,
+              45,
+              46,
+              46
+            ],
+            "borderColor": "#fff",
+            "backgroundColor": "#fff",
+            "pointBackgroundColor": "#fff",
+            "borderWidth": 2,
+            "tension": 0
+          }
+        ]
+      }
+    }
+  ],
+  "taskTabs": [
+    {
+      "id": "bugs",
+      "label": "Fallas",
+      "icon": "bug_report",
+      "tareas": [
+        {
+          "texto": "Recalibrar sensor ultrasónico",
+          "hecha": false
+        },
+        {
+          "texto": "Revisar ruido en el encoder izquierdo",
+          "hecha": true
+        }
+      ]
+    },
+    {
+      "id": "web",
+      "label": "Software",
+      "icon": "code",
+      "tareas": [
+        {
+          "texto": "Ajustar PID de velocidad",
+          "hecha": false
+        },
+        {
+          "texto": "Registrar telemetría en CSV",
+          "hecha": true
+        }
+      ]
+    },
+    {
+      "id": "srv",
+      "label": "Hardware",
+      "icon": "memory",
+      "tareas": [
+        {
+          "texto": "Cambiar batería de respaldo",
+          "hecha": false
+        }
+      ]
+    }
+  ],
+  "employees": [
+    {
+      "id": 1,
+      "nombre": "Sensor ultrasónico",
+      "salario": "OK",
+      "pais": "Frontal",
+      "ciudad": "0.45 m"
+    },
+    {
+      "id": 2,
+      "nombre": "IMU",
+      "salario": "OK",
+      "pais": "Chasis",
+      "ciudad": "2° de inclinación"
+    },
+    {
+      "id": 3,
+      "nombre": "Encoder izquierdo",
+      "salario": "Revisar",
+      "pais": "Rueda izq.",
+      "ciudad": "812 ticks/s"
+    },
+    {
+      "id": 4,
+      "nombre": "Encoder derecho",
+      "salario": "OK",
+      "pais": "Rueda der.",
+      "ciudad": "805 ticks/s"
+    }
+  ],
+  "tabla": {
+    "titulo": "Estado de sensores",
+    "subtitulo": "Última lectura del robot",
+    "columnas": [
+      "ID",
+      "Sensor",
+      "Estado",
+      "Ubicación",
+      "Lectura"
+    ]
+  }
+}
