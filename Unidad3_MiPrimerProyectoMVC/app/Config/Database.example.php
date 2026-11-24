@@ -1,4 +1,5 @@
 <?php
+// Copia este archivo como Database.php y pon tu contraseña de MariaDB.
 namespace App\Config;
 
 use PDO;
@@ -12,7 +13,7 @@ class Database {
             $host = '127.0.0.1';
             $db   = 'mvc_app';
             $user = 'root';
-            $pass = 'JYGSIEMPRE221008';
+            $pass = '';
             $charset = 'utf8mb4';
 
             $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
